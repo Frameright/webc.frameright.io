@@ -101,6 +101,44 @@ function picSelectorClicked(buttonId) {
       }]`;
       break;
 
+    case 'birds':
+      imgElement.src = 'assets/pics/birds.webp';
+      imgElement.dataset.imageRegions = `[{
+        "id": "horizontalbanner",
+        "names": ["Horizontal banner"],
+        "shape": "rectangle",
+        "unit": "pixel",
+        "imageWidth": "5391",
+        "imageHeight": "3633",
+        "x": "524",
+        "y": "1755",
+        "width": "4867",
+        "height": "1825"
+      }, {
+        "id": "square",
+        "names": ["Square"],
+        "shape": "rectangle",
+        "unit": "pixel",
+        "imageWidth": "5391",
+        "imageHeight": "3633",
+        "x": "668",
+        "y": "915",
+        "width": "2660",
+        "height": "2660"
+      }, {
+        "id": "tallportrait",
+        "names": ["Tall portrait"],
+        "shape": "rectangle",
+        "unit": "pixel",
+        "imageWidth": "5391",
+        "imageHeight": "3633",
+        "x": "876",
+        "y": "0",
+        "width": "1362",
+        "height": "3633"
+      }]`;
+      break;
+
     case 'skater':
     default:
       imgElement.src = 'assets/pics/skater.webp';
