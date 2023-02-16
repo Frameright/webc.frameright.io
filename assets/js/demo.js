@@ -110,10 +110,10 @@ function picSelectorClicked(buttonId) {
         "unit": "pixel",
         "imageWidth": "5391",
         "imageHeight": "3633",
-        "x": "524",
-        "y": "1755",
-        "width": "4867",
-        "height": "1825"
+        "x": "553",
+        "y": "2392",
+        "width": "3301",
+        "height": "1238"
       }, {
         "id": "square",
         "names": ["Square"],
