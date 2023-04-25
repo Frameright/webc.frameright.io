@@ -54,7 +54,7 @@ async function picSelectorClicked(buttonId) {
   const arrayBuffer = await image.arrayBuffer();
   const buffer = Buffer.Buffer.from(arrayBuffer);
   const parser = new ImageDisplayControl.Parser(buffer);
-  const regions = parser.getIdcMetadata();
+  const regions = parser.getIdcMetadata('rectangle', 'crop');
   imgElement.dataset.imageRegions = JSON.stringify(regions);
 
   // Highlight the selected button. Un-highlight the others.
