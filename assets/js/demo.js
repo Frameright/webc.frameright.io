@@ -66,9 +66,11 @@ async function picSelectorClicked(buttonId) {
   });
 
   async function picLoaded() {
-    // At this point, imgElement.src has been loaded, so fetch() will use the
-    // browser's cache.
-    const image = await fetch(imgElement.src);
+    // At this point, imgElement.src has just been loaded, so we now for a fact
+    // that it's fresh in the cache, and fetch() can make use of it:
+    const image = await fetch(imgElement.src, {
+      cache: 'force-cache',
+    });
 
     // Read image regions from the image's metadata and pass them to the web
     // component.
