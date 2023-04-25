@@ -48,14 +48,13 @@ async function picSelectorClicked(buttonId) {
       break;
   }
 
-  // Read image regions from the image's metadata and pass them to the web
-  // component.
-  const image = await fetch(imgElement.src);
-  const arrayBuffer = await image.arrayBuffer();
-  const buffer = Buffer.Buffer.from(arrayBuffer);
-  const parser = new ImageDisplayControl.Parser(buffer);
-  const regions = parser.getIdcMetadata('rectangle', 'crop');
-  imgElement.dataset.imageRegions = JSON.stringify(regions);
+  // See
+  // https://stackoverflow.com/questions/280049/how-to-create-a-javascript-callback-for-knowing-when-an-image-is-loaded
+  if (imgElement.complete) {
+    await picLoaded();
+  } else {
+    imgElement.addEventListener('load', picLoaded);
+  }
 
   // Highlight the selected button. Un-highlight the others.
   document.querySelectorAll('.pic-selector').forEach(element => {
@@ -65,6 +64,20 @@ async function picSelectorClicked(buttonId) {
       element.classList.remove('purple');
     }
   });
+
+  async function picLoaded() {
+    // At this point, imgElement.src has been loaded, so fetch() will use the
+    // browser's cache.
+    const image = await fetch(imgElement.src);
+
+    // Read image regions from the image's metadata and pass them to the web
+    // component.
+    const arrayBuffer = await image.arrayBuffer();
+    const buffer = Buffer.Buffer.from(arrayBuffer);
+    const parser = new ImageDisplayControl.Parser(buffer);
+    const regions = parser.getIdcMetadata('rectangle', 'crop');
+    imgElement.dataset.imageRegions = JSON.stringify(regions);
+  }
 }
 
 function modeSelectorClicked(buttonId) {
