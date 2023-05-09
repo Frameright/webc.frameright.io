@@ -29,30 +29,33 @@ const _IMG_ELEMENT_ID = 'myimg';
 
 async function picSelectorClicked(buttonId) {
   const imgElement = document.getElementById(_IMG_ELEMENT_ID);
-  switch (buttonId) {
-    case 'car':
-      imgElement.src = 'assets/pics/car.webp';
-      break;
+  const fileElement = document.getElementById('file');
 
-    case 'surfer':
-      imgElement.src = 'assets/pics/surfer.webp';
+  switch (buttonId) {
+    case 'upload':
+      if (!fileElement.hasChangeEventListener) {
+        fileElement.hasChangeEventListener = true;
+        fileElement.addEventListener('change', picUploaded);
+      }
+
+      // See https://stackoverflow.com/questions/4109276/how-to-detect-input-type-file-change-for-the-same-file
+      fileElement.value = null;
+
+      fileElement.click();
       break;
 
     case 'birds':
-      imgElement.src = 'assets/pics/birds.webp';
+      setImgSrc('assets/pics/birds.webp');
       break;
 
     case 'skater':
     default:
-      imgElement.src = 'assets/pics/skater.webp';
+      setImgSrc('assets/pics/skater.webp');
       break;
   }
 
-  // See
-  // https://stackoverflow.com/questions/280049/how-to-create-a-javascript-callback-for-knowing-when-an-image-is-loaded
-  if (imgElement.complete) {
-    await picLoaded();
-  } else {
+  if (!imgElement.hasLoadEventListener) {
+    imgElement.hasLoadEventListener = true;
     imgElement.addEventListener('load', picLoaded);
   }
 
@@ -65,6 +68,26 @@ async function picSelectorClicked(buttonId) {
     }
   });
 
+  function setImgSrc(src) {
+    imgElement.src = src;
+
+    // See
+    // https://stackoverflow.com/questions/280049/how-to-create-a-javascript-callback-for-knowing-when-an-image-is-loaded
+    if (imgElement.complete) {
+      picLoaded();
+    }
+  }
+
+  // Handler called whenever a user has just selected/uploaded a new image file.
+  async function picUploaded() {
+    if (fileElement.files.length === 0) {
+      return;
+    }
+    URL.revokeObjectURL(imgElement.src); // clean up previously uploaded image
+    setImgSrc(URL.createObjectURL(fileElement.files[0]));
+  }
+
+  // Handler called whenever imgElement.src's URL has been loaded.
   async function picLoaded() {
     // At this point, imgElement.src has just been loaded, so we now for a fact
     // that it's fresh in the cache, and fetch() can make use of it:
@@ -77,7 +100,9 @@ async function picSelectorClicked(buttonId) {
     const arrayBuffer = await image.arrayBuffer();
     const buffer = Buffer.Buffer.from(arrayBuffer);
     const parser = new ImageDisplayControl.Parser(buffer);
-    const regions = parser.getIdcMetadata('rectangle', 'crop');
+    const regions = parser.getIdcMetadata(
+      'rectangle' // TODO: , 'crop'
+    );
     imgElement.dataset.imageRegions = JSON.stringify(regions);
   }
 }
