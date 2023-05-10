@@ -20,165 +20,43 @@ interact('.resizable').resizable({
   },
 });
 
+window.onload = async function () {
+  await picSelectorClicked('skater');
+  modeSelectorClicked('on');
+}
+
 const _IMG_ELEMENT_ID = 'myimg';
 
-function picSelectorClicked(buttonId) {
+async function picSelectorClicked(buttonId) {
   const imgElement = document.getElementById(_IMG_ELEMENT_ID);
   switch (buttonId) {
     case 'car':
       imgElement.src = 'assets/pics/car.webp';
-      imgElement.dataset.imageRegions = `[{
-        "id": "horizontalbanner",
-        "names": ["Horizontal banner"],
-        "shape": "rectangle",
-        "unit": "pixel",
-        "imageWidth": "4933",
-        "imageHeight": "3289",
-        "x": "520",
-        "y": "1026",
-        "width": "3695",
-        "height": "1385"
-      }, {
-        "id": "square",
-        "names": ["Square"],
-        "shape": "rectangle",
-        "unit": "pixel",
-        "imageWidth": "4933",
-        "imageHeight": "3289",
-        "x": "804",
-        "y": "807",
-        "width": "1647",
-        "height": "1647"
-      }, {
-        "id": "tallportrait",
-        "names": ["Tall portrait"],
-        "shape": "rectangle",
-        "unit": "pixel",
-        "imageWidth": "4933",
-        "imageHeight": "3289",
-        "x": "730",
-        "y": "79",
-        "width": "1204",
-        "height": "3210"
-      }]`;
       break;
 
     case 'surfer':
       imgElement.src = 'assets/pics/surfer.webp';
-      imgElement.dataset.imageRegions = `[{
-        "id": "horizontalbanner",
-        "names": ["Horizontal banner"],
-        "shape": "rectangle",
-        "unit": "pixel",
-        "imageWidth": "2905",
-        "imageHeight": "1937",
-        "x": "0",
-        "y": "426",
-        "width": "2905",
-        "height": "1089"
-      }, {
-        "id": "square",
-        "names": ["Square"],
-        "shape": "rectangle",
-        "unit": "pixel",
-        "imageWidth": "2905",
-        "imageHeight": "1937",
-        "x": "795",
-        "y": "0",
-        "width": "1937",
-        "height": "1937"
-      }, {
-        "id": "tallportrait",
-        "names": ["Tall portrait"],
-        "shape": "rectangle",
-        "unit": "pixel",
-        "imageWidth": "2905",
-        "imageHeight": "1937",
-        "x": "2035",
-        "y": "0",
-        "width": "726",
-        "height": "1937"
-      }]`;
       break;
 
     case 'birds':
       imgElement.src = 'assets/pics/birds.webp';
-      imgElement.dataset.imageRegions = `[{
-        "id": "horizontalbanner",
-        "names": ["Horizontal banner"],
-        "shape": "rectangle",
-        "unit": "pixel",
-        "imageWidth": "5391",
-        "imageHeight": "3633",
-        "x": "553",
-        "y": "2392",
-        "width": "3301",
-        "height": "1238"
-      }, {
-        "id": "square",
-        "names": ["Square"],
-        "shape": "rectangle",
-        "unit": "pixel",
-        "imageWidth": "5391",
-        "imageHeight": "3633",
-        "x": "668",
-        "y": "915",
-        "width": "2660",
-        "height": "2660"
-      }, {
-        "id": "tallportrait",
-        "names": ["Tall portrait"],
-        "shape": "rectangle",
-        "unit": "pixel",
-        "imageWidth": "5391",
-        "imageHeight": "3633",
-        "x": "876",
-        "y": "0",
-        "width": "1362",
-        "height": "3633"
-      }]`;
       break;
 
     case 'skater':
     default:
       imgElement.src = 'assets/pics/skater.webp';
-      imgElement.dataset.imageRegions = `[{
-        "id": "horizontalbanner",
-        "names": ["Horizontal banner"],
-        "shape": "rectangle",
-        "unit": "pixel",
-        "imageWidth": "5760",
-        "imageHeight": "3840",
-        "x": "2343",
-        "y": "858",
-        "width": "3417",
-        "height": "1281"
-      }, {
-        "id": "square",
-        "names": ["Square"],
-        "shape": "rectangle",
-        "unit": "pixel",
-        "imageWidth": "5760",
-        "imageHeight": "3840",
-        "x": "2462",
-        "y": "1097",
-        "width": "782",
-        "height": "782"
-      }, {
-        "id": "tallportrait",
-        "names": ["Tall portrait"],
-        "shape": "rectangle",
-        "unit": "pixel",
-        "imageWidth": "5760",
-        "imageHeight": "3840",
-        "x": "2345",
-        "y": "850",
-        "width": "1122",
-        "height": "2990"
-      }]`;
       break;
   }
 
+  // See
+  // https://stackoverflow.com/questions/280049/how-to-create-a-javascript-callback-for-knowing-when-an-image-is-loaded
+  if (imgElement.complete) {
+    await picLoaded();
+  } else {
+    imgElement.addEventListener('load', picLoaded);
+  }
+
+  // Highlight the selected button. Un-highlight the others.
   document.querySelectorAll('.pic-selector').forEach(element => {
     if (element.id === buttonId) {
       element.classList.add('purple');
@@ -186,6 +64,22 @@ function picSelectorClicked(buttonId) {
       element.classList.remove('purple');
     }
   });
+
+  async function picLoaded() {
+    // At this point, imgElement.src has just been loaded, so we now for a fact
+    // that it's fresh in the cache, and fetch() can make use of it:
+    const image = await fetch(imgElement.src, {
+      cache: 'force-cache',
+    });
+
+    // Read image regions from the image's metadata and pass them to the web
+    // component.
+    const arrayBuffer = await image.arrayBuffer();
+    const buffer = Buffer.Buffer.from(arrayBuffer);
+    const parser = new ImageDisplayControl.Parser(buffer);
+    const regions = parser.getIdcMetadata('rectangle', 'crop');
+    imgElement.dataset.imageRegions = JSON.stringify(regions);
+  }
 }
 
 function modeSelectorClicked(buttonId) {
@@ -210,6 +104,7 @@ function modeSelectorClicked(buttonId) {
       break;
   }
 
+  // Highlight the selected button. Un-highlight the others.
   document.querySelectorAll('.mode-selector').forEach(element => {
     if (element.id === buttonId) {
       element.classList.add('purple');
@@ -218,6 +113,3 @@ function modeSelectorClicked(buttonId) {
     }
   });
 }
-
-picSelectorClicked('skater');
-modeSelectorClicked('on');
