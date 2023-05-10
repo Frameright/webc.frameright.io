@@ -45,12 +45,12 @@ async function picSelectorClicked(buttonId) {
       break;
 
     case 'birds':
-      setImgSrc('assets/pics/birds.webp');
+      setImgSrc('assets/pics/birds.jpg');
       break;
 
     case 'skater':
     default:
-      setImgSrc('assets/pics/skater.webp');
+      setImgSrc('assets/pics/skater.jpg');
       break;
   }
 
