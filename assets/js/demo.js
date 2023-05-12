@@ -100,9 +100,7 @@ async function picSelectorClicked(buttonId) {
     const arrayBuffer = await image.arrayBuffer();
     const buffer = Buffer.Buffer.from(arrayBuffer);
     const parser = new ImageDisplayControl.Parser(buffer);
-    const regions = parser.getIdcMetadata(
-      'rectangle' // TODO: , 'crop'
-    );
+    const regions = parser.getIdcMetadata('rectangle', 'crop');
     imgElement.dataset.imageRegions = JSON.stringify(regions);
   }
 }
