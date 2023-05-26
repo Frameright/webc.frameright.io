@@ -1,0 +1,7 @@
+# Allowing CORS for testing purposes, so we can fetch() images from this app
+# from other test apps and parse their metadata.
+# See https://answers.netlify.com/t/access-control-allow-origin-policy/1813
+[[headers]]
+   for = "/*"
+   [headers.values]
+      Access-Control-Allow-Origin = "*"
