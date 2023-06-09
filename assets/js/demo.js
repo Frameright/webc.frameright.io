@@ -46,11 +46,21 @@ async function picSelectorClicked(buttonId) {
 
     case 'birds':
       setImgSrc('assets/pics/birds.jpg');
+      imgElement.srcset = `
+        assets/pics/birds_highres.jpg  5391w,
+        assets/pics/birds.jpg          1500w
+      `
+      imgElement.sizes = '(max-width: 5391px) 100vw, 1500px';
       break;
 
     case 'skater':
     default:
       setImgSrc('assets/pics/skater.jpg');
+      imgElement.srcset = `
+        assets/pics/skater_highres.jpg  5760w,
+        assets/pics/skater.jpg          1500w
+      `
+      imgElement.sizes = '(max-width: 5760px) 100vw, 1500px';
       break;
   }
 
@@ -85,6 +95,8 @@ async function picSelectorClicked(buttonId) {
     }
     URL.revokeObjectURL(imgElement.src); // clean up previously uploaded image
     setImgSrc(URL.createObjectURL(fileElement.files[0]));
+    imgElement.removeAttribute('srcset');
+    imgElement.removeAttribute('sizes');
   }
 
   // Handler called whenever imgElement.src's URL has been loaded.
