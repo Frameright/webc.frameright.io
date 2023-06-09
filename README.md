@@ -17,3 +17,5 @@ You can also serve it locally with e.g.
 sudo npm install --global http-server
 http-server
 ```
+
+&emsp; :bulb: [GitHub Discussions](https://github.com/Frameright/image-display-control-web-component/discussions)
