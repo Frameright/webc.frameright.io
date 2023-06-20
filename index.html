@@ -128,13 +128,55 @@
               </button>
             </div>
           </div>
-          <div class="distanced qr">
+          <div class="mailchimp">
+            <h6>Stay updated with our newsletter</h6>
+            <form
+              action="https://frameright.us19.list-manage.com/subscribe/post?u=d9d1a282d42f0f85213ec5256&amp;id=8085d668c5&amp;f_id=002ea8e4f0"
+              method="post"
+              id="mc-embedded-subscribe-form"
+              name="mc-embedded-subscribe-form"
+              class="validate"
+              target="_blank"
+            >
+              <input
+                type="email"
+                defaultValue=""
+                placeholder="YOUR EMAIL HERE"
+                name="EMAIL"
+                id="mce-EMAIL"
+                required
+              />
+              <div hidden>
+                <input type="hidden" name="tags" value="6417565" />
+              </div>
+              <div
+                style="position: absolute; left: -5000px;"
+                aria-hidden="true"
+              >
+                {/* real people should not fill this in and expect good things - do not remove this or risk form bot signups*/}
+                <input
+                  type="text"
+                  name="b_d9d1a282d42f0f85213ec5256_8085d668c5"
+                  tabIndex={-1}
+                  defaultValue=""
+                />
+              </div>
+              <input
+                type="submit"
+                value="SUBSCRIBE"
+                name="subscribe"
+                id="mc-embedded-subscribe"
+                class="button"
+              />
+            </form>
+          </div>
+          <div class="qr">
             <a href="https://webc.frameright.io">
               <img
                 class="qr"
                 src="https://api.qrserver.com/v1/create-qr-code/?size=1024x1024&data=https://webc.frameright.io"
               />
-              <div class="hint">webc.frameright.io</div>
+              <div class="hint qr">webc.frameright.io</div>
             </a>
           </div>
         </div>
