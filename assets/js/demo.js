@@ -21,7 +21,7 @@ interact('.resizable').resizable({
 });
 
 window.onload = async function () {
-  await picSelectorClicked('skater');
+  await picSelectorClicked('skater1');
   modeSelectorClicked('on');
 }
 
@@ -44,21 +44,21 @@ async function picSelectorClicked(buttonId) {
       fileElement.click();
       break;
 
-    case 'birds':
-      setImgSrc('assets/pics/birds.jpg');
+    case 'skater1':
+    default:
+      setImgSrc('assets/pics/skater1_highres.jpg');
       imgElement.srcset = `
-        assets/pics/birds_highres.jpg  5391w,
-        assets/pics/birds.jpg          1500w
+        assets/pics/skater1_highres.jpg  5430w,
+        assets/pics/skater1.jpg          1500w
       `
-      imgElement.sizes = '(max-width: 5391px) 100vw, 1500px';
+      imgElement.sizes = '(max-width: 5430px) 100vw, 1500px';
       break;
 
-    case 'skater':
-    default:
-      setImgSrc('assets/pics/skater.jpg');
+    case 'skater2':
+      setImgSrc('assets/pics/skater2.jpg');
       imgElement.srcset = `
-        assets/pics/skater_highres.jpg  4000w,
-        assets/pics/skater.jpg          1500w
+        assets/pics/skater2_highres.jpg  4000w,
+        assets/pics/skater2.jpg          1500w
       `
       imgElement.sizes = '(max-width: 4000px) 100vw, 1500px';
       break;
