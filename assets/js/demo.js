@@ -128,6 +128,7 @@ function modeSelectorClicked(buttonId) {
     case 'debug':
       imgElement.dataset.loglevel = 'debug';
       imgElement.dataset.disabled = 'none';
+      imgElement.dataset.avoidNoRegion = 'off';
       imgElement.dataset.debugDrawRegions = 'on';
       break;
 
@@ -135,6 +136,7 @@ function modeSelectorClicked(buttonId) {
     default:
       imgElement.dataset.loglevel = 'off';
       imgElement.dataset.disabled = 'none';
+      imgElement.dataset.avoidNoRegion = 'on';
       imgElement.dataset.debugDrawRegions = 'off';
       break;
   }
