@@ -109,8 +109,7 @@ async function picSelectorClicked(buttonId) {
 
     // Read image regions from the image's metadata and pass them to the web
     // component.
-    const arrayBuffer = await image.arrayBuffer();
-    const buffer = Buffer.Buffer.from(arrayBuffer);
+    const buffer = await image.arrayBuffer();
     const parser = new ImageDisplayControl.Parser(buffer);
     const regions = parser.getIdcMetadata('rectangle', 'crop');
     imgElement.dataset.imageRegions = JSON.stringify(regions);
